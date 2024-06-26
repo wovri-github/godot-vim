@@ -225,7 +225,10 @@ func register_event(event: InputEventKey, with_context: Mode) -> Dictionary:
 	var ch: String = event_to_string(event)
 	if ch.is_empty():	return {} # Invalid
 	if BLACKLIST.has(ch):	return {}
-	
+	if event.is_shift_pressed():
+		if event.get_keycode() == 75:
+			cursor.code_edit.symbol_lookup.emit(cursor.code_edit.get_word_under_caret(), cursor.code_edit.get_selection_line(), cursor.code_edit.get_selection_column())
+
 	# Handle Insert mode timeout
 	if with_context == Mode.INSERT:
 		if handle_insert_mode_timeout():
